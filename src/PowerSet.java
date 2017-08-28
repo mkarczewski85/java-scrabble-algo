@@ -4,7 +4,7 @@ import java.util.List;
 public class PowerSet {
 
     public static List<String> powerSet(String s) {
-        // the number of subsets is 2^n
+        // the number of subsets is 2^n (2^s.length)
         long numSubsets = 1L << s.length();
         return powerSet(s, numSubsets - 1);
     }
@@ -12,7 +12,7 @@ public class PowerSet {
     private static List<String> powerSet(String s, long active) {
         if (active < 0) {
             // Recursion base case
-            // All 2^n subsets were visited, stop here and return a new list
+            // All (2^s.length) subsets were visited, stop here and return a new list
             return new ArrayList<>();
         }
 
@@ -33,7 +33,7 @@ public class PowerSet {
     }
 
     private static boolean isSet(long bits, int i) {
-        // return true if the ith bit is set
+        // return true if the i-th bit is set
         return (bits & (1L << i)) != 0;
     }
 

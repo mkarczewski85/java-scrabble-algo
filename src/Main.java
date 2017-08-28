@@ -6,16 +6,46 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
+        start();
+    }
 
+    public static void start() {
+        char[] a = {'i', 'm', 'p', 'r', 'a', 's', 'ł'};
+
+        Set<String> allPossibleWords = findAllPossibleWords(a);
+        if (!allPossibleWords.isEmpty()) {
+            System.out.println("Znaleziono " + allPossibleWords.size() + " słów: \n");
+            printFoundWords(allPossibleWords);
+        } else {
+            System.out.println("Nie znaleziono żadnego słowa");
+        }
+
+    }
+
+    public static void printFoundWords(Set<String> foundWords) {
+        int score = 0;
+        int highestScore = 0;
+        String wordWithHighestScore = null;
+
+        for (String s : foundWords) {
+            score = WordPoints.calcFinalScore(s);
+            System.out.println(s + " : " + score + " pkt.");
+            if (score > highestScore) {
+                highestScore = score;
+                wordWithHighestScore = s;
+            }
+        }
+
+        System.out.println("\nNajwyżej punktowane słowo: " + wordWithHighestScore + " (" + highestScore + " pkt.)");
+    }
+
+    public static Set<String> findAllPossibleWords(char[] a) {
         Map<String, String> newMap = getListWordsFromFile("slowa.txt");
         Set<String> foundWords = new TreeSet<>();
 
-        System.out.println("Baza załadowana!");
-        System.out.println();
-        char[] a = {'k', 'm', 'ś', 'a', 'a', 's', 'a'};
-
         List<String> combinations = PowerSet.powerSet(new String(a));
         char[] temp;
+
         for (int i = 0; i < combinations.size(); i++) {
             temp = combinations.get(i).toCharArray();
             Arrays.sort(temp);
@@ -30,13 +60,10 @@ public class Main {
             }
         }
 
-        for (String s : foundWords) {
-            System.out.println(s);
-        }
+        return foundWords;
     }
 
-
-    public static Map<String, String> getListWordsFromFile(String filepath) {
+    private static Map<String, String> getListWordsFromFile(String filepath) {
 
         Map<String, String> wordsMap = new HashMap<>();
 
